@@ -3,7 +3,6 @@ import numpy as np
 
 # from sklearn.naive_bayes import MultinomialNB
 # from sklearn.linear_model import LogisticRegression
-# from sklearn.linear_model import Perceptron
 # You can use the models form sklearn packages to check the performance of your own models
 
 class HateSpeechClassifier(object):
@@ -42,18 +41,28 @@ class NaiveBayesClassifier(HateSpeechClassifier):
     """Naive Bayes Classifier
     """
     def __init__(self):
-        # Add your code here!
-        raise Exception("Must be implemented")
+        self.nonhate_list = []
+        self.hate_list = []
+        self.total_positive = 0
+        self.total_negative = 0
         
 
     def fit(self, X, Y):
         # Add your code here!
-        raise Exception("Must be implemented")
-        
+
+        for i in range(len(Y)):
+            if Y[i] == 0:
+                self.nonhate_list.append(X[i])
+            else:
+                self.hate_list.append(X[i])
+ 
+        self.total_positive = len(self.nonhate_list)
+        self.total_negative = len(self.hate_list)
     
     def predict(self, X):
         # Add your code here!
-        raise Exception("Must be implemented")
+        return 5
+
 
 # TODO: Implement this
 class LogisticRegressionClassifier(HateSpeechClassifier):
@@ -74,25 +83,9 @@ class LogisticRegressionClassifier(HateSpeechClassifier):
         raise Exception("Must be implemented")
 
 
-class PerceptronClassifier(HateSpeechClassifier):
-    """Logistic Regression Classifier
-    """
-
-    def __init__(self):
-        # Add your code here!
-        raise Exception("Must be implemented")
-
-    def fit(self, X, Y):
-        # Add your code here!
-        raise Exception("Must be implemented")
-
-    def predict(self, X):
-        # Add your code here!
-        raise Exception("Must be implemented")
-
 # you can change the following line to whichever classifier you want to use for bonus
 # i.e to choose NaiveBayes classifier, you can write
-# class BonusClassifier(NaiveBayes):
-class BonusClassifier(PerceptronClassifier):
+# class BonusClassifier(NaiveBayesClassifier):
+class BonusClassifier(NaiveBayesClassifier):
     def __init__(self):
         super().__init__()
