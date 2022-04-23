@@ -1,4 +1,5 @@
 import numpy as np
+
 # You need to build your own model here instead of using well-built python packages such as sklearn
 
 # from sklearn.naive_bayes import MultinomialNB
@@ -42,18 +43,44 @@ class NaiveBayesClassifier(HateSpeechClassifier):
     """Naive Bayes Classifier
     """
     def __init__(self):
-        # Add your code here!
-        raise Exception("Must be implemented")
+        self.pos = {}
+        self.neg = {}
+        self.features = 0
+        self.count_pos = 0
+        self.count_neg = 0
+        self.pos_prior = 0
+        self.neg_prior = 0
         
-
     def fit(self, X, Y):
-        # Add your code here!
-        raise Exception("Must be implemented")
-        
-    
+        for i in range(len(Y)):
+            curr_table = self.pos if Y[i] == 1 else self.neg
+            for word,occur in enumerate(X[i]):
+                curr_table[word] = occur + curr_table.get(word, 0)
+
+        self.count_pos = sum(self.pos.values())
+        self.count_neg = sum(self.neg.values())
+        self.pos_prior = self.count_pos/self.count_pos + self.count_neg
+        self.neg_prior = self.count_neg/self.pos_prior + self.count_neg
+        self.features = len(self.pos)
+
+        for key in range(len(self.pos)):
+            self.pos[key] = (self.pos[key]+1)/(self.count_pos+self.features)
+            self.neg[key] = (self.neg[key]+1)/(self.count_neg+self.features)
+
     def predict(self, X):
-        # Add your code here!
-        raise Exception("Must be implemented")
+        results = []
+        for input in X:
+            pos,neg = self.pos_prior,self.neg_prior
+            for word,occur in enumerate(input):
+                pos *= self.pos[word] ** occur
+                neg *= self.neg[word] ** occur
+            estimate = 1 if pos/(pos+neg) > neg/(pos+neg) else 0
+            results.append(estimate)
+        return results
+
+
+
+
 
 # TODO: Implement this
 class LogisticRegressionClassifier(HateSpeechClassifier):
