@@ -1,5 +1,5 @@
 import numpy as np
-# You need to build your own model here instead of using well-built python packages such as sklearn
+w# You need to build your own model here instead of using well-built python packages such as sklearn
 
 # from sklearn.naive_bayes import MultinomialNB
 # from sklearn.linear_model import LogisticRegression
@@ -61,7 +61,15 @@ class NaiveBayesClassifier(HateSpeechClassifier):
     
     def predict(self, X):
         # Add your code here!
-        return 5
+        results = []
+        for input in X:
+            pos,neg = self.pos_prior,self.neg_prior
+            for word,occur in enumerate(input):
+                pos *= self.pos[word] ** occur
+                neg *= self.neg[word] ** occur
+            estimate = 1 if pos/(pos+neg) > neg/(pos+neg) else 0
+            results.append(estimate)
+        return results
 
 
 # TODO: Implement this
