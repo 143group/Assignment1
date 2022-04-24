@@ -130,16 +130,14 @@ class LogisticRegressionClassifier(HateSpeechClassifier):
 
     def predict(self, X):
         result = []
-        sum = 0
         for row in X:
+            sum = 0
             for word,occur in enumerate(row):
                 if occur != 0:
                     sum += self.values[word]*self.betas[word]
-        prob = 1/(1 + e**(-sum))
-        print(prob)
-        estimate = 1 if prob > 1-prob else 0
-    
-        result.append(estimate)
+            prob = 1/(1 + e**(-sum))
+            estimate = 1 if prob > 1-prob else 0
+            result.append(estimate)
         return result
         
 
