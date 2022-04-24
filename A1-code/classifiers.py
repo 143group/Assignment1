@@ -1,4 +1,5 @@
 import numpy as np
+from math import log
 # You need to build your own model here instead of using well-built python packages such as sklearn
 
 # from sklearn.naive_bayes import MultinomialNB
@@ -58,8 +59,8 @@ class NaiveBayesClassifier(HateSpeechClassifier):
 
         self.count_pos = sum(self.pos.values())
         self.count_neg = sum(self.neg.values())
-        self.pos_prior = self.count_pos/self.count_pos + self.count_neg
-        self.neg_prior = self.count_neg/self.pos_prior + self.count_neg
+        self.pos_prior = self.count_pos/(self.count_pos + self.count_neg)
+        self.neg_prior = self.count_neg/(self.pos_prior + self.count_neg)
         self.features = len(self.pos)
 
         for key in range(len(self.pos)):
@@ -70,11 +71,11 @@ class NaiveBayesClassifier(HateSpeechClassifier):
         # Add your code here!
         results = []
         for input in X:
-            pos,neg = self.pos_prior,self.neg_prior
+            pos,neg = log(self.pos_prior),log(self.neg_prior)
             for word,occur in enumerate(input):
-                pos *= self.pos[word] ** occur
-                neg *= self.neg[word] ** occur
-            estimate = 1 if pos/(pos+neg) > neg/(pos+neg) else 0
+                pos += log(self.pos[word] ** occur)
+                neg += log(self.neg[word] ** occur)
+            estimate = 1 if pos/(pos+neg) < neg/(pos+neg) else 0 
             results.append(estimate)
         return results
 
