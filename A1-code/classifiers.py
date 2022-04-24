@@ -1,5 +1,5 @@
 import numpy as np
-w# You need to build your own model here instead of using well-built python packages such as sklearn
+# You need to build your own model here instead of using well-built python packages such as sklearn
 
 # from sklearn.naive_bayes import MultinomialNB
 # from sklearn.linear_model import LogisticRegression
@@ -41,23 +41,30 @@ class NaiveBayesClassifier(HateSpeechClassifier):
     """Naive Bayes Classifier
     """
     def __init__(self):
-        self.nonhate_list = []
-        self.hate_list = []
-        self.total_positive = 0
-        self.total_negative = 0
-        
+        self.pos = {}
+        self.neg = {}
+        self.features = 0
+        self.count_pos = 0
+        self.count_neg = 0
+        self.pos_prior = 0
+        self.neg_prior = 0
 
     def fit(self, X, Y):
         # Add your code here!
-
         for i in range(len(Y)):
-            if Y[i] == 0:
-                self.nonhate_list.append(X[i])
-            else:
-                self.hate_list.append(X[i])
- 
-        self.total_positive = len(self.nonhate_list)
-        self.total_negative = len(self.hate_list)
+            curr_table = self.pos if Y[i] == 1 else self.neg
+            for word,occur in enumerate(X[i]):
+                curr_table[word] = occur + curr_table.get(word, 0)
+
+        self.count_pos = sum(self.pos.values())
+        self.count_neg = sum(self.neg.values())
+        self.pos_prior = self.count_pos/self.count_pos + self.count_neg
+        self.neg_prior = self.count_neg/self.pos_prior + self.count_neg
+        self.features = len(self.pos)
+
+        for key in range(len(self.pos)):
+            self.pos[key] = (self.pos[key]+1)/(self.count_pos+self.features)
+            self.neg[key] = (self.neg[key]+1)/(self.count_neg+self.features)
     
     def predict(self, X):
         # Add your code here!
