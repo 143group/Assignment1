@@ -59,23 +59,24 @@ class NaiveBayesClassifier(HateSpeechClassifier):
 
         self.count_pos = sum(self.pos.values())
         self.count_neg = sum(self.neg.values())
-        self.pos_prior = self.count_pos/(self.count_pos + self.count_neg)
-        self.neg_prior = self.count_neg/(self.pos_prior + self.count_neg)
+        self.pos_prior = self.count_pos / (self.count_pos + self.count_neg)
+        self.neg_prior = self.count_neg / (self.pos_prior + self.count_neg)
         self.features = len(self.pos)
 
+        # add-1 smoothing 
         for key in range(len(self.pos)):
-            self.pos[key] = (self.pos[key]+1)/(self.count_pos+self.features)
-            self.neg[key] = (self.neg[key]+1)/(self.count_neg+self.features)
+            self.pos[key] = (self.pos[key]+1) / (self.count_pos+self.features)
+            self.neg[key] = (self.neg[key]+1) / (self.count_neg+self.features)
     
     def predict(self, X):
         # Add your code here!
         results = []
         for input in X:
-            pos,neg = log(self.pos_prior),log(self.neg_prior)
+            pos, neg = log(self.pos_prior), log(self.neg_prior)
             for word,occur in enumerate(input):
                 pos += log(self.pos[word] ** occur)
                 neg += log(self.neg[word] ** occur)
-            estimate = 1 if pos/(pos+neg) < neg/(pos+neg) else 0 
+            estimate = 1 if pos / (pos+neg) < neg / (pos+neg) else 0 
             results.append(estimate)
         return results
 
