@@ -1,4 +1,8 @@
+import enum
 import numpy as np
+import random
+from math import e
+from math import log
 
 # You need to build your own model here instead of using well-built python packages such as sklearn
 
@@ -70,16 +74,13 @@ class NaiveBayesClassifier(HateSpeechClassifier):
     def predict(self, X):
         results = []
         for input in X:
-            pos,neg = self.pos_prior,self.neg_prior
+            pos,neg = log(self.pos_prior),log(self.neg_prior)
             for word,occur in enumerate(input):
-                pos *= self.pos[word] ** occur
-                neg *= self.neg[word] ** occur
-            estimate = 1 if pos/(pos+neg) > neg/(pos+neg) else 0
+                pos += log(self.pos[word] ** occur)
+                neg += log(self.neg[word] ** occur)
+            estimate = 1 if pos/(pos+neg) < neg/(pos+neg) else 0 
             results.append(estimate)
         return results
-
-
-
 
 
 # TODO: Implement this
@@ -87,39 +88,49 @@ class LogisticRegressionClassifier(HateSpeechClassifier):
     """Logistic Regression Classifier
     """
     def __init__(self):
-        # Add your code here!
-        raise Exception("Must be implemented")
-        
+        self.pos = {}
+        self.neg = {}
+        self.count_pos = 0
+        self.count_neg = 0
+        self.values = []
+        self.betas = []
+        self.alpha = 0.01
+        self.features = 0
 
     def fit(self, X, Y):
-        # Add your code here!
-        raise Exception("Must be implemented")
+        # Splits data into occurance in + and -
+        for i in range(len(Y)):
+            curr_table = self.pos if Y[i] == 1 else self.neg
+            for word,occur in enumerate(X[i]):
+                curr_table[word] = occur + curr_table.get(word, 0)
+        self.count_pos = sum(self.pos.values())
+        self.count_neg = sum(self.neg.values())
+
+        # Compare prob a word appears in + and -
+        for key in range(len(self.pos)):
+            self.pos[key] = (self.pos[key])/(self.count_pos)
+            self.neg[key] = (self.neg[key])/(self.count_neg)
+            self.values.append(0) if self.pos[key] < self.neg[key] else self.values.append(1)
+
+        for i in range(len(X[0])):
+            self.betas.append(random.uniform(-1, 1))
+
+        self.values = np.asarray(self.values)
+        self.betas = np.asarray(self.betas)
+
+        for i in range(len(self.betas)):
+            self.betas = self.betas + (self.alpha * (self.values[i] - self.betas[i])) * self.values
+
+    def predict(self, X):
+        result = []
+        sum = 0
+        for row in X:
+            for word,occur in enumerate(row):
+                if occur != 0:
+                    sum += self.values[word]*self.betas[word]
+        prob = 1/(1 + e**(-sum))
+        estimate = 1 if prob > 1-prob else 0
+        result.append(estimate)
+        return result
         
-    
-    def predict(self, X):
-        # Add your code here!
-        raise Exception("Must be implemented")
-
-
-class PerceptronClassifier(HateSpeechClassifier):
-    """Logistic Regression Classifier
-    """
-
-    def __init__(self):
-        # Add your code here!
-        raise Exception("Must be implemented")
-
-    def fit(self, X, Y):
-        # Add your code here!
-        raise Exception("Must be implemented")
-
-    def predict(self, X):
-        # Add your code here!
-        raise Exception("Must be implemented")
-
-# you can change the following line to whichever classifier you want to use for bonus
-# i.e to choose NaiveBayes classifier, you can write
-# class BonusClassifier(NaiveBayes):
-class BonusClassifier(PerceptronClassifier):
-    def __init__(self):
-        super().__init__()
+            
