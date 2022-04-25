@@ -51,7 +51,6 @@ class NaiveBayesClassifier(HateSpeechClassifier):
         self.neg_prior = 0
 
     def fit(self, X, Y):
-        # Add your code here!
         # get the given classification of each sentence
         # and store the sentence and count into feature dictionary
         for i in range(len(Y)):
@@ -91,26 +90,29 @@ class NaiveBayesClassifier(HateSpeechClassifier):
 class LogisticRegressionClassifier(HateSpeechClassifier):
     """Logistic Regression Classifier
     """
-    def __init__(self):
-        # Add your code here!        
+    def __init__(self):       
         self.learning_rate = 0.03
         self.num_iterates = 1400
 
     def fit(self, X, Y):
+        # X columns is the size of the vocabulary
+        # coeffiecent vector must match the # of columns of X
         self.betas = np.zeros(X.shape[1]).T
+
         for _ in range(self.num_iterates):
             # sigmoid function 
             y_i = 1 / (1 + np.exp(-(X @ self.betas)))
 
-            # a = sigma x_i * beta not sure what to call this
-            right_side = (self.learning_rate) * np.dot((y_i - Y), X)
+            #  gradient = sigma x_i * beta 
+            gradient_descent = self.learning_rate * np.dot((y_i - Y), X)
 
             # need to transpose the rightside vector to match the betas vector
             # in order to subtract the 2
-            self.betas = self.betas - right_side.T
+            self.betas = self.betas - gradient_descent.T
 
     def predict(self, X):
         # binary logistic regression equation
+        # if predicted value >= 0.5, classify as hate
         log_regress = (1 / (1 + np.exp(-(X @ self.betas)))).round()
         return log_regress
         
