@@ -1,6 +1,4 @@
 import numpy as np
-import random
-from math import e
 from math import log
 # You need to build your own model here instead of using well-built python packages such as sklearn
 
@@ -95,50 +93,26 @@ class LogisticRegressionClassifier(HateSpeechClassifier):
     """
     def __init__(self):
         # Add your code here!        
-        self.pos = {}
-        self.neg = {}
-        self.count_pos = 0
-        self.count_neg = 0
-        self.values = []
-        self.betas = []
-        self.alpha = 0.01
-        self.features = 0
+        self.learning_rate = 0.03
+        self.num_iterates = 1400
 
     def fit(self, X, Y):
-        # Splits data into occurance in + and -
-        for i in range(len(Y)):
-            curr_table = self.pos if Y[i] == 1 else self.neg
-            for word,occur in enumerate(X[i]):
-                curr_table[word] = occur + curr_table.get(word, 0)
-        self.count_pos = sum(self.pos.values())
-        self.count_neg = sum(self.neg.values())
+        self.betas = np.zeros(X.shape[1]).T
+        for _ in range(self.num_iterates):
+            # sigmoid function 
+            y_i = 1 / (1 + np.exp(-(X @ self.betas)))
 
-        # Compare prob a word appears in + and -
-        for key in range(len(self.pos)):
-            self.pos[key] = (self.pos[key])/(self.count_pos)
-            self.neg[key] = (self.neg[key])/(self.count_neg)
-            self.values.append(0) if self.pos[key] < self.neg[key] else self.values.append(1)
+            # a = sigma x_i * beta not sure what to call this
+            right_side = (self.learning_rate) * np.dot((y_i - Y), X)
 
-        for i in range(len(X[0])):
-            self.betas.append(random.uniform(-1, 1))
-
-        self.values = np.asarray(self.values)
-        self.betas = np.asarray(self.betas)
-
-        for i in range(len(self.betas)):
-            self.betas = self.betas + (self.alpha * (self.values[i] - self.betas[i])) * self.values
+            # need to transpose the rightside vector to match the betas vector
+            # in order to subtract the 2
+            self.betas = self.betas - right_side.T
 
     def predict(self, X):
-        result = []
-        for row in X:
-            sum = 0
-            for word,occur in enumerate(row):
-                if occur != 0:
-                    sum += self.values[word]*self.betas[word]
-            prob = 1/(1 + e**(-sum))
-            estimate = 1 if prob > 1-prob else 0
-            result.append(estimate)
-        return result
+        # binary logistic regression equation
+        log_regress = (1 / (1 + np.exp(-(X @ self.betas)))).round()
+        return log_regress
         
 
 
