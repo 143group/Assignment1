@@ -49,3 +49,51 @@ Since $P(w|S = -) < P(w|S = +)$, we can assume that the model will apply the _PO
 **c.**
 
 We could have `not_word` as one of the features such as `not_disappointing` and `not_great`. This allows the model to notice that a not was place before an adjective and therefore, treat it as a different feature. In the case of the sentence S given, this should improve our positive probability since it will no longer see `disappointing` as a negative feature, but a positive which should increase our accuracy and improve classification.
+
+# Problem 2: Programming Hate Speech Detection
+
+## 2.1 - Naives Bayes
+
+**1. Report the accuracy on the training, dev, and test sets.**
+
+```
+===== Train Accuracy =====
+Accuracy: 1353 / 1413 = 0.9575
+===== Test Accuracy =====
+Accuracy: 191 / 250 = 0.7640
+Time for training and test: 3.51 seconds
+```
+
+**2. Look at the output of your model on some randomly selected examples in the dev set. What do you observe? Why do you think the model has predicted the way it has for those specific examples?**
+
+Out of the 5 random examples taken from the dev set, it seems the model was only able to accuratly predict 1/3 of them. This prediction is due to the fact that most of the words found wihtin these sentences, had a higher occurance in sentences labeled "negative" (1) from the test set. For example, the word "divide" which was in a postive (0) sentence only appeared in the negativily (1) labeled sentence in the test case, causing the probability that the sentence with this word included had a higher chance of being negative (1) than positive (0).
+
+**3. List the 10 words that, under your model, have the highest ratio of P(w|1)/P(w|0) (the most distinctly hatespeech words) and list the 10 words with the lowest ratio. What trends do you see?**
+
+The 10 words under my model that are distincly hatespeech words are:
+
+- scum
+- sweden
+- hate
+- different
+- ape
+- crap
+- jew
+- filth
+- genocide
+- Negro
+
+The 10 words opposite are:
+
+- whites
+- black
+- Jew
+- culture
+- history
+- city
+- stormfront
+- home
+- world
+- years
+
+A trend we noticed is that the words that are interpreted as distincly hatespeech, are words that by themselves imply a negative conotation, while those that can be mixed between postive and negative are just neutral words like city and history which don't really add to the emotions of a sentence.
