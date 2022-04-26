@@ -62,6 +62,12 @@ Accuracy: 1353 / 1413 = 0.9575
 ===== Test Accuracy =====
 Accuracy: 191 / 250 = 0.7640
 Time for training and test: 3.51 seconds
+
+===== Train Accuracy =====
+Accuracy: 1353 / 1413 = 0.9575 
+===== Dev Accuracy =====
+Accuracy: 189 / 250 = 0.7560 
+Time for training and test: 7.78 seconds
 ```
 
 **2. Look at the output of your model on some randomly selected examples in the dev set. What do you observe? Why do you think the model has predicted the way it has for those specific examples?**
@@ -97,3 +103,27 @@ The 10 words opposite are:
 - years
 
 A trend we noticed is that the words that are interpreted as distincly hatespeech, are words that by themselves imply a negative conotation, while those that can be mixed between postive and negative are just neutral words like city and history which don't really add to the emotions of a sentence.
+
+## Logistic Regression 
+
+
+**1. Report the accuracy without L2 regularization on the train, dev, and test sets. How does it compare to Naive Bayes?**
+```
+===== Train Accuracy =====
+Accuracy: 1412 / 1413 = 0.9993 
+===== Test Accuracy =====
+Accuracy: 190 / 250 = 0.7600
+Time for training and test: 11.37 seconds
+
+===== Train Accuracy =====
+Accuracy: 1412 / 1413 = 0.9993
+===== Dev Accuracy =====
+Accuracy: 173 / 250 = 0.6920
+Time for training and test: 11.35 seconds
+```
+
+Compared to Naive Bayes, the Logistic Regression without L2 regularization did 4.18% better on the training data set, 0.4% worse
+on the test set, and 6.4% worse on the dev set. I suspect that Logistic Regression without L2 regularization overfits the training
+data set, which would explain the 99% train accuracy and why it does worse on the test and dev set.
+
+**2.Add L2 regularization with different weights, such as λ = {0.0001,0.001,0.01,0.1,1,10}. In your writeup, describe what you observed**
