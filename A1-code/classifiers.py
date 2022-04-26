@@ -109,7 +109,7 @@ class LogisticRegressionClassifier(HateSpeechClassifier):
             # need to transpose the rightside vector to match the betas vector
             # in order to subtract the 2
             # L2 regularization 2 * alpha * learning_rate * beta
-            l2 = np.multiply(self.betas, 2 * 10 * self.learning_rate) 
+            l2 = np.multiply(self.betas, 2 * 0.1 * self.learning_rate) 
             self.betas = self.betas + (gradient_descent.T - l2)
             # self.betas = self.betas + gradient_descent.T
 
