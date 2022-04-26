@@ -108,7 +108,10 @@ class LogisticRegressionClassifier(HateSpeechClassifier):
 
             # need to transpose the rightside vector to match the betas vector
             # in order to subtract the 2
-            self.betas = self.betas + gradient_descent.T
+            #L2 regularization 2 * alpha * learning_rate * beta
+            l2 = np.multiply(self.betas, 2 * 0.001 * self.learning_rate) 
+            self.betas = self.betas - gradient_descent.T - l2
+            #self.betas = self.betas + gradient_descent.T
 
     def predict(self, X):
         # binary logistic regression equation
