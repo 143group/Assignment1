@@ -113,8 +113,8 @@ class LogisticRegressionClassifier(HateSpeechClassifier):
     def predict(self, X):
         # binary logistic regression equation
         # if predicted value >= 0.5, classify as hate
-        log_regress = (1 / (1 + np.exp(-(X @ self.betas)))).round()
-        return log_regress
+        log_regress = (1 / (1 + np.exp(-(X @ self.betas))))
+        return log_regress.round()
         
 
 
