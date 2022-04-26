@@ -127,3 +127,59 @@ on the test set, and 6.4% worse on the dev set. I suspect that Logistic Regressi
 data set, which would explain the 99% train accuracy and why it does worse on the test and dev set.
 
 **2.Add L2 regularization with different weights, such as λ = {0.0001,0.001,0.01,0.1,1,10}. In your writeup, describe what you observed**
+L2 regularization slightly improved the training data by 0.14% and test data accuracy by 0.4% with λ = 0.1 and learning rate "(α)" = 0.03.
+The accuarcies with λ = 0.1 and learning rate "(α)" = 0.03 showed the best results in our code. Other values of λ, did not have
+better results than our logistic regression without L2 regularization results.
+At higher values of λ, the logistic regression numbers tend to overflow and the accuracy of all sets drop significantly. 
+At lower values of λ, the accuracy of all sets drop slightly. Also, the dev set has marginally higher accuracies than the 
+test set.
+
+```
+λ = 10
+===== Train Accuracy =====
+Accuracy: 716 / 1413 = 0.5067 
+===== Test Accuracy =====
+Accuracy: 118 / 250 = 0.4720
+===== Dev Accuracy =====
+Accuracy: 124 / 250 = 0.4960
+
+λ = 1
+===== Train Accuracy =====
+Accuracy: 806 / 1413 = 0.5704 
+===== Test Accuracy =====
+Accuracy: 132 / 250 = 0.5280
+===== Dev Accuracy =====
+Accuracy: 134 / 250 = 0.5360
+
+λ = 0.1
+===== Train Accuracy =====
+Accuracy: 1410 / 1413 = 0.9979 
+===== Test Accuracy =====
+Accuracy: 191 / 250 = 0.7640
+===== Dev Accuracy =====
+Accuracy: 178 / 250 = 0.7120
+
+λ = 0.01
+===== Train Accuracy =====
+Accuracy: 1412 / 1413 = 0.9993 
+===== Test Accuracy =====
+Accuracy: 187 / 250 = 0.7480
+===== Dev Accuracy =====
+Accuracy: 173 / 250 = 0.6920
+
+λ = 0.001
+===== Train Accuracy =====
+Accuracy: 1412 / 1413 = 0.9993 
+===== Test Accuracy =====
+Accuracy: 189 / 250 = 0.7560
+===== Dev Accuracy =====
+Accuracy: 173 / 250 = 0.6920
+
+λ = 0.0001
+===== Train Accuracy =====
+Accuracy: 1412 / 1413 = 0.9993 
+===== Test Accuracy =====
+Accuracy: 190 / 250 = 0.7600
+===== Dev Accuracy =====
+Accuracy: 172 / 250 = 0.6880
+```
