@@ -101,19 +101,19 @@ class LogisticRegressionClassifier(HateSpeechClassifier):
 
         for _ in range(self.num_iterates):
             # sigmoid function 
-            y_i = 1 / (1 + np.exp(-(X @ self.betas)))
+            y_i = 1 / (1 + np.exp(-(np.dot(X, self.betas))))
 
-            #  gradient = sigma x_i * beta 
-            gradient_descent = self.learning_rate * np.dot((y_i - Y), X)
+            #  gradient =  alpha(Y - y_i)* beta 
+            gradient_descent = self.learning_rate * np.dot((Y - y_i), X)
 
             # need to transpose the rightside vector to match the betas vector
             # in order to subtract the 2
-            self.betas = self.betas - gradient_descent.T
+            self.betas = self.betas + gradient_descent.T
 
     def predict(self, X):
         # binary logistic regression equation
         # if predicted value >= 0.5, classify as hate
-        log_regress = (1 / (1 + np.exp(-(X @ self.betas))))
+        log_regress = (1 / (1 + np.exp(-np.dot(X, self.betas))))
         return log_regress.round()
         
 
