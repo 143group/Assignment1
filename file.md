@@ -1,3 +1,8 @@
+John Le 
+Ken Zhang
+Jay Patel
+Brad Byun
+
 # Problem 1: Naive Bayes
 
 **a.**
