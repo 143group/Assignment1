@@ -1,0 +1,15 @@
+Group Members:
+- John Le
+- Jay Patel
+- Brad Byun
+- Chen Kai Zhang 
+
+Running the program:
+    1. Download the zip file and unzip it.
+    2. Change directory until you are in the A1-code folder.
+    3. Make sure that numpy and math library are installed on you computer
+    4. To run Naive Bayes Classifier, enter the command: python main.py --model NaiveBayes
+        - You might have to run python3 instead of python
+    5. To run Logistic Regression Classifier, enter the command: python main.py --model LogisticRegression 
+        - You might have to run python3 instead of python
+
