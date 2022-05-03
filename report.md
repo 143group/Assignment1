@@ -23,17 +23,15 @@ P(disappointing|+) = 0.04           P(disappointing|-) = 0.27
 $POS = P(+) * P(great|+) * P(amazing|+) * P(terrible|+) * P(disappointing|+) $
 $NEG = P(-) * P(great|-) * P(amazing|-) * P(terrible|-) * P(disappointing|-) $
 
-```
 Log Space Probabilities
-```
+
 $log(P(w|S = +)) = log(POS/(POS+NEG)) = log(0.44) = −0.357$
 $log(P(w|S = -)) = log(NEG/(POS+NEG)) = log(0.56) = −0.252$
-```
+   
 Normal Space Probabilites
-```
-$POS = P(+) * P(great|+) * P(amazing|+) * P(terrible|+) * P(disappointing|+) = 0.50 * 0.26 * 0.35 * 0.04 * 0.04 = 0.0000858$
-$NEG = P(-) * P(great|-) * P(amazing|-) * P(terrible|-) * P(disappointing|-) = 0.50 * 0.09 * 0.05 * 0.18 * 0.27 = 0.0001094$
 
+$POS = 0.50 * 0.26 * 0.35 * 0.04 * 0.04 = 0.0000858$
+$NEG = 0.50 * 0.09 * 0.05 * 0.18 * 0.27 = 0.0001094$
 $P(w|S = +) = POS/(POS+NEG) = 0.0000858 / (0.0000858 + 0.0001094) = 0.44$
 $P(w|S = -) = NEG/(POS+NEG) = 0.0001094 / (0.0000858 + 0.0001094) = 0.56$
 
